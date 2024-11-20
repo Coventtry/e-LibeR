@@ -1,4 +1,4 @@
-### README para GitHub: **e-LibeR - Sistema de Gestión Bibliotecaria**
+**e-LibeR - Sistema de Gestión Bibliotecaria**
 
 ---
 
@@ -55,23 +55,23 @@ Antes de comenzar, asegúrate de tener lo siguiente instalado en tu computadora:
 
 ---
 
-5. Ejecutar el Proyecto
+##### 5. **Ejecutar el Proyecto**
 1. Abre tu navegador y dirígete a:  
    `http://localhost/e-libeR`
 2. Ahora deberías ver el sistema en funcionamiento.
 
 ---
 
-Características del Sistema
-- Gestión de Materiales: Agregar, editar y buscar libros.
-- Gestión de Socios: Registro, edición y visualización de usuarios.
-- Gestión de Préstamos: Registrar préstamos y devoluciones con actualización automática de disponibilidad.
+#### **Características del Sistema**
+- **Gestión de Materiales**: Agregar, editar y buscar libros.
+- **Gestión de Socios**: Registro, edición y visualización de usuarios.
+- **Gestión de Préstamos**: Registrar préstamos y devoluciones con actualización automática de disponibilidad.
 
 ---
 
-Soporte
+#### **Soporte**
 Si encuentras algún problema al implementar o utilizar el sistema, no dudes en crear un **Issue** en este repositorio.
 
 ---
 
-¡Gracias por usar e-LibeR! 🚀
+¡Gracias por usar **e-LibeR**! 🚀
