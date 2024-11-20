@@ -73,5 +73,8 @@ Antes de comenzar, asegúrate de tener lo siguiente instalado en tu computadora:
 Si encuentras algún problema al implementar o utilizar el sistema, no dudes en crear un **Issue** en este repositorio.
 
 ---
+##### **Puedes darle un vistazo al video de presentación del Software y agradecimientos a nuestros colaboradores.**
+https://drive.google.com/file/d/1zV9WfDTNkJRYRDVegjmEfS1QU5G4Ryh-/view?usp=sharing
+---
 
-¡Gracias por usar **e-LibeR**! 🚀
+¡Gracias por aportar al desarrollo de **e-LibeR**! 🚀
