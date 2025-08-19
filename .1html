@@ -1,0 +1,14 @@
+body { background-color: #e8f5e9; font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: 50px auto; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        h1 { color: #2e7d32; }
+        .btn-primary { background-color: #2e7d32; }
+        .btn-primary:hover { background-color: #1b5e20; }
+        footer { background-color: #161245; color: white; text-align: center; padding: 20px; margin-top: 20px; border: 2px solid #2e7d32; border-radius: 5px; }
+        a {
+             display: block;
+             text-align: center;
+             margin-top: 20px;
+             color: #6c757d;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
