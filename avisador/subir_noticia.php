@@ -10,30 +10,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_STRING);
     $descripcion = filter_input(INPUT_POST, 'descripcion', FILTER_SANITIZE_STRING);
 
-    // Procesar la imagen
-    $target_dir = "img/";  // Carpeta para subir imágenes
+    // Carpeta destino (en el servidor)
+    $target_dir = "../img/";  // la carpeta está en la raíz del proyecto
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }
 
     if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
+        // 🔹 Solo guardamos el nombre de archivo en la BD
         $nombreArchivo = basename($_FILES["imagen"]["name"]);
-        $imagen = $target_dir . $nombreArchivo;
-        $imageFileType = strtolower(pathinfo($imagen, PATHINFO_EXTENSION));
+        $rutaServidor = $target_dir . $nombreArchivo; // ruta física donde se guarda
+        $imageFileType = strtolower(pathinfo($rutaServidor, PATHINFO_EXTENSION));
 
         // Validar que sea una imagen real
         $check = getimagesize($_FILES["imagen"]["tmp_name"]);
         if ($check !== false) {
-            // Mover archivo a la carpeta img/
-            if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $imagen)) {
+            // Mover archivo a la carpeta /img/
+            if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaServidor)) {
                 // Insertar noticia en la base de datos usando consulta preparada
                 try {
-                    $sql = "INSERT INTO noticias (titulo, descripcion, imagen) VALUES (:titulo, :descripcion, :imagen)";
+                    $sql = "INSERT INTO noticias (titulo, descripcion, imagen) 
+                            VALUES (:titulo, :descripcion, :imagen)";
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute([
                         ':titulo' => $titulo,
                         ':descripcion' => $descripcion,
-                        ':imagen' => $imagen
+                        ':imagen' => $nombreArchivo  // ✅ Guardamos solo el nombre
                     ]);
                     $mensaje_exito = "La noticia ha sido subida exitosamente.";
                 } catch (Exception $e) {

@@ -1,4 +1,5 @@
-<?php
+    <link rel="icon" href="../assets/img/icono.ico" type="image/x-icon">
+    <?php
 require '../conexion/conectatew.php'; // Conexión PDO centralizada
 
 $mensaje_exito = '';
@@ -241,8 +242,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <a href="../ingreso_bibliotecario_1.php" class="volver d-block text-center mt-4">← Volver al menú principal</a>
     </div>
-
+<footer>
    <?php include 'footer1.html'; ?>
+   <footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>

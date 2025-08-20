@@ -1,3 +1,4 @@
+    <link rel="icon" href="../assets/img/icono.ico" type="image/x-icon">
 <?php
 require '../conexion/conectatew.php'; // Conexión PDO
 // Inicializar variables
@@ -142,7 +143,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
         font-weight: bold;
     }
 
-    footer {
+   
+    /* Contenedor principal centrado */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centra horizontalmente todo dentro */
+    text-align: center;  /* centra texto dentro de los divs, incluidos mensajes */
+    width: 80%;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+/* Formulario centrado */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center; /* centra los botones y select */
+    width: 100%; /* mantiene ancho del select */
+}
+
+select {
+    width: 80%; /* reduce un poco el ancho para centrarlo */
+}
+
+.btn-primary {
+    width: 50%; /* botón más pequeño y centrado */
+}
+
+/* Mensajes centrados */
+.alert-success, .alert-error {
+    text-align: center;
+    width: 80%;
+}
+ footer {
         background-color: #161245;
         color: white;
         text-align: center;

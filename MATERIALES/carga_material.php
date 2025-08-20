@@ -1,3 +1,4 @@
+    <link rel="icon" href="../assets/img/icono.ico" type="image/x-icon">
 <?php 
 require '../conexion/CONECTOR.PHP';  
 require_once '../phpqrcode/qrlib.php'; // Incluimos la librería PHPQRCode
@@ -68,7 +69,6 @@ if (isset($_POST['buscar'])) {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding-bottom: 120px;
         }
 
         a {
@@ -157,20 +157,6 @@ if (isset($_POST['buscar'])) {
         #downloadQRBtn {
             margin-top: 15px;
         }
-
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 100px;
-            background-color: #f8f9fa;
-            color: #666;
-            text-align: center;
-            padding: 30px 10px;
-            border-top: 1px solid #ccc;
-            box-sizing: border-box;
-            z-index: 100;
-        }
     </style>
 </head> 
 <body> 
@@ -221,6 +207,6 @@ if (isset($_POST['buscar'])) {
 
 <a href="../ingreso_bibliotecario_1.php">← Volver al menú principal</a> 
 <br><br> 
-
+  <?php include '../componentes/footer1.html'; ?>
 </body> 
 </html>

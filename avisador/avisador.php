@@ -135,11 +135,11 @@ $noticias = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <div class="news-container">
                                 <h3 class="news-title"><?= htmlspecialchars($row["titulo"]) ?></h3>
                                 <?php
-                                    // Convertir ruta absoluta a relativa para mostrar correctamente la imagen
-                                    $imagenPath = basename($row["imagen"]); // Ej: 'foto.jpg'
-                                    $rutaWeb = "/e-LibeR/avisador/img/" . $imagenPath;
+                                $imagenPath = basename($row["imagen"]); // ej: 'foto.jpg'
+                                $rutaWeb = "/e-LibeR/img/" . $imagenPath;
                                 ?>
-                                <img src="<?= $rutaWeb ?>" alt="Noticia" class="img-fluid mb-3 rounded">
+                                <img src="<?= htmlspecialchars($rutaWeb) ?>" alt="Noticia" class="img-fluid mb-3 rounded">
+                                
                                 <p class="news-description"><?= htmlspecialchars($row["descripcion"]) ?></p>
 
                                 <!-- Botón Modificar -->

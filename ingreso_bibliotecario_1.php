@@ -7,7 +7,27 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
 }
+
+// Usuario actual
+$usuario_actual = $_SESSION['usuario'];
+
+// Obtener datos del bibliotecario, incluyendo la imagen
+try {
+    $sql = "SELECT nombre, email, usuario, picture FROM bibliotecarios WHERE usuario = :usuario";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':usuario', $usuario_actual);
+    $stmt->execute();
+    $datos_usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error al consultar datos del bibliotecario: " . $e->getMessage());
+}
+
+// Si no hay imagen cargada, usar la por defecto
+$imagen_perfil = !empty($datos_usuario['picture']) 
+    ? 'uploads/' . htmlspecialchars($datos_usuario['picture']) 
+    : 'assets/img/login.png';
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -21,7 +41,7 @@ if (!isset($_SESSION['usuario'])) {
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <style>
+ <style>
     body, html {
       height: 100%;
       margin: 0;
@@ -111,7 +131,20 @@ if (!isset($_SESSION['usuario'])) {
       pointer-events: none;
       color: grey;
     }
-  </style>
+
+    /* Estilo para imagen de perfil circular */
+ .perfil-img {
+    width: 60px;       /* ajusta el tamaño según necesites */
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;  /* recorta la imagen para que llene el círculo */
+    border: 2px solid #28a745; /* borde */
+    margin-left: 10px;   /* espacio arriba */
+    margin-right: 10px; /* espacio abajo */
+}
+
+</style>
+
 </head>
 <body>
 
@@ -122,7 +155,7 @@ if (!isset($_SESSION['usuario'])) {
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <img src="assets/img/login.png" alt="Bibliotecario" width="60" height="60">
+<img src="<?php echo $imagen_perfil; ?>" alt="Bibliotecario" class="perfil-img">
     
     <!-- Menú desplegable del usuario -->
     <div class="user-menu">

@@ -1,4 +1,5 @@
- <style>
+    <link rel="icon" href="../assets/img/icono.ico" type="image/x-icon">
+<style>
         body { background-color: #e8f5e9; font-family: Arial; }
         .container { margin-top: 50px; }
         h1 { color: #2e7d32; text-align: center; margin-bottom: 30px; }
@@ -43,7 +44,7 @@
             color: white;
             padding: 32px;
             text-align: center;
-            margin-top: 428px;
+            margin-top: 100px;
         }
     </style>
 <?php

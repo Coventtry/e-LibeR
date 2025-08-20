@@ -107,15 +107,20 @@ $noticias = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php
     if (count($noticias) > 0) {
         foreach ($noticias as $row) {
-            echo '<div class="col-md-4">';
-            echo '<h3>' . htmlspecialchars($row["titulo"]) . '</h3>';
-            echo '<img src="' . htmlspecialchars($row["imagen"]) . '" alt="Noticia" class="img-fluid">';
-            echo '<br><br>';
-            echo '<p>' . htmlspecialchars($row["descripcion"]) . '</p>';
-            echo '</div>';
+            $imagenPath = basename($row["imagen"]); // ej: 'foto.jpg'
+            $rutaWeb = "/e-LibeR/img/" . $imagenPath;
+            ?>
+            <div class="col-md-4 mb-4">
+              <div class="news-container">
+                <h3 class="news-title"><?= htmlspecialchars($row["titulo"]) ?></h3>
+                <img src="<?= htmlspecialchars($rutaWeb) ?>" alt="Noticia" class="img-fluid mb-3 rounded">
+                <p class="news-description"><?= htmlspecialchars($row["descripcion"]) ?></p>
+              </div>
+            </div>
+            <?php
         }
     } else {
-        echo "No hay noticias disponibles.";
+        echo "<p class='text-center'>No hay noticias disponibles.</p>";
     }
 
     // Cerrar conexión
@@ -123,8 +128,7 @@ $noticias = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
   </div>
 </div>
-
 <!-- Pie de página -->
-<?php include 'footer1.html'; ?>
+ <?php include 'componentes/footer1.html'; ?>
 </body>
 </html>

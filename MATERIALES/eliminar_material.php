@@ -1,3 +1,4 @@
+    <link rel="icon" href="../assets/img/icono.ico" type="image/x-icon">
 <?php
 require '../conexion/conectatew.php'; // Conexión PDO
 

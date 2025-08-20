@@ -6,6 +6,18 @@
 **e-LibeR** es un sistema de gestión bibliotecaria diseñado para facilitar la administración de libros, socios y préstamos. Ideal para pequeñas bibliotecas, este proyecto se desarrolla utilizando PHP y MySQL y se ejecuta mediante XAMPP.
 
 ---
+#### **Vistas Previas del Sistema**
+
+**1. Menú de Ingreso (sin login)**  
+![Menú de Ingreso](img/menu_ingreso.png)
+
+**2. Menú de Bibliotecario (ya logueado)**  
+![Menú de Bibliotecario](img/menu_bibliotecario.png)
+
+**3. Base de Datos en MySQL**  
+![Base de Datos MySQL](img/bd_mysql.png)
+
+---
 
 #### **Requisitos Previos**
 Antes de comenzar, asegúrate de tener lo siguiente instalado en tu computadora:
@@ -38,7 +50,7 @@ Antes de comenzar, asegúrate de tener lo siguiente instalado en tu computadora:
    `http://localhost/phpmyadmin`
 2. Crea una nueva base de datos llamada `biblioteca`.
 3. En la base de datos recién creada, haz clic en **Importar**.
-4. Selecciona el archivo `biblioteca.sql` que se encuentra en la carpeta del proyecto.
+4. Selecciona el archivo `biblioteca.sql` que se encuentra en la carpeta del proyecto. **carpeta SQL**
 5. Haz clic en **Continuar** para finalizar la importación.
 
 ---
@@ -78,3 +90,4 @@ https://drive.google.com/file/d/1zV9WfDTNkJRYRDVegjmEfS1QU5G4Ryh-/view?usp=shari
 ---
 
 ¡Gracias por aportar al desarrollo de **e-LibeR**! 🚀
+consultas al mail: **rodrigogarciafaud@gmail.com**

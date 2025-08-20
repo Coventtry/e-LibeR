@@ -1,3 +1,4 @@
+    <link rel="icon" href="../assets/img/icono.ico" type="image/x-icon">
 <?php
 require '../conexion/conectatew.php';
 
@@ -52,32 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buscar'])) {
         echo '<div class="alert alert-danger text-center">Ingreso incorrecto</div>';
     }
 }
-
-// Buscar materiales por nombre
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buscar_material'])) {
-    $titulo_busqueda = trim($_POST['titulo']);
-    $titulo_base = substr($titulo_busqueda, 0, 3);
-
-    if (preg_match('/^[a-zA-Z0-9]{3}$/', $titulo_base)) {
-        try {
-            $sql_materiales = "SELECT * FROM materiales WHERE titulo LIKE :titulo AND disponibilidad > 0";
-            $stmt_materiales = $pdo->prepare($sql_materiales);
-            $param_titulo = "%$titulo_base%";
-            if (!executeWithRetry($stmt_materiales, [':titulo' => $param_titulo])) {
-                throw new PDOException("Error al ejecutar la búsqueda de materiales");
-            }
-            $materialesEncontrados = $stmt_materiales->fetchAll(PDO::FETCH_ASSOC);
-            if (empty($materialesEncontrados)) {
-                echo '<div class="alert alert-danger text-center">No se encontraron materiales disponibles con ese título.</div>';
-            }
-        } catch (PDOException $e) {
-            echo '<div class="alert alert-danger text-center">Error al buscar materiales: ' . htmlspecialchars($e->getMessage()) . '</div>';
-        }
-    } else {
-        echo '<div class="alert alert-danger text-center">Ingreso incorrecto en búsqueda de material</div>';
-    }
-}
-
 // Procesar confirmación de préstamo
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirmar_prestamo'])) {
     $material_id = (int) trim($_POST['material_id']);
@@ -108,8 +83,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirmar_prestamo']))
             throw new Exception('Cantidad inválida o sin disponibilidad suficiente.');
         }
 
-        // Verificar préstamos activos
-        $stmtPrestamos = $pdo->prepare("SELECT COUNT(*) as cantidad FROM prestamos WHERE socio_id = :socio_id AND estado = 'activo'");
+        // Verificar préstamos activos (máximo 3)
+        $stmtPrestamos = $pdo->prepare("
+            SELECT COUNT(*) as cantidad 
+            FROM prestamos 
+            WHERE socio_id = :socio_id AND estado = 'activo'
+        ");
         executeWithRetry($stmtPrestamos, [':socio_id' => $socio_id]);
         $prestamos = $stmtPrestamos->fetch(PDO::FETCH_ASSOC);
 
@@ -118,14 +97,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirmar_prestamo']))
         }
 
         // Verificar duplicado
-        $stmtDuplicado = $pdo->prepare("SELECT 1 FROM prestamos WHERE socio_id = :socio_id AND material_id = :material_id AND estado = 'activo'");
+        $stmtDuplicado = $pdo->prepare("
+            SELECT 1 
+            FROM prestamos 
+            WHERE socio_id = :socio_id AND material_id = :material_id AND estado = 'activo'
+        ");
         executeWithRetry($stmtDuplicado, [':socio_id' => $socio_id, ':material_id' => $material_id]);
         if ($stmtDuplicado->fetch()) {
             throw new Exception('El socio ya tiene este material en préstamo.');
         }
 
-        // Registrar préstamo
-        $stmtPrestamo = $pdo->prepare("INSERT INTO prestamos (socio_id, material_id, fecha_prestamo, fecha_devolucion, estado, cantidad) VALUES (:socio_id, :material_id, :fecha_prestamo, :fecha_devolucion, 'pendiente', :cantidad)");
+        // Registrar préstamo como ACTIVO
+        $stmtPrestamo = $pdo->prepare("
+            INSERT INTO prestamos 
+            (socio_id, material_id, fecha_prestamo, fecha_devolucion, estado, cantidad) 
+            VALUES (:socio_id, :material_id, :fecha_prestamo, :fecha_devolucion, 'activo', :cantidad)
+        ");
         executeWithRetry($stmtPrestamo, [
             ':socio_id' => $socio_id,
             ':material_id' => $material_id,
@@ -142,17 +129,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirmar_prestamo']))
         ]);
 
         $pdo->commit();
-       echo '<div id="confirmModal" class="confirmacion-box" style="text-align:center;">'
-   . '<div class="confirmacion-header"><h4>Préstamo Confirmado</h4>'
-   . '<button onclick="document.getElementById(\'confirmModal\').style.display=\'none\'; window.location=\'prestamo.php\'" style="float:right;font-size:18px;background:none;border:none">✖</button>'
-   . '</div>'
-   . '<p><strong>Clasificación Física:</strong> ' . htmlspecialchars($material['clasificacion_fisica']) . '</p>'
-   . '</div>';
+
+        // Mostrar confirmación
+        echo '<div id="confirmModal" class="confirmacion-box" style="text-align:center;">'
+           . '<div class="confirmacion-header"><h4>Préstamo Confirmado</h4>'
+           . '<button onclick="document.getElementById(\'confirmModal\').style.display=\'none\'; window.location=\'prestamo.php\'" style="float:right;font-size:18px;background:none;border:none">✖</button>'
+           . '</div>'
+           . '<p><strong>Clasificación Física:</strong> ' . htmlspecialchars($material['clasificacion_fisica']) . '</p>'
+           . '</div>';
+
     } catch (Exception $e) {
         $pdo->rollBack();
         echo '<div class="alert alert-danger text-center">' . htmlspecialchars($e->getMessage()) . '</div>';
     }
 }
+
 
 // Mostrar formulario de confirmación
 elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['material_id'], $_POST['cantidad'], $_POST['socio_id'], $_POST['fecha_devolucion'])) {

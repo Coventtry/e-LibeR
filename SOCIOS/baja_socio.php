@@ -1,3 +1,4 @@
+    <link rel="icon" href="../assets/img/icono.ico" type="image/x-icon">
 <?php
 // Conexión a MySQL con PDO
 require '../conexion/conecta2.php';
@@ -69,7 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dar_baja'])) {
             flex: 1;
         }
 
-        body { background-color: #f9f9f9; font-family: Arial, sans-serif; }
+        body { background-color: #f9f9f9;
+              font-family: Arial, sans-serif; }
 
         .container {
             margin-top: 200px;
