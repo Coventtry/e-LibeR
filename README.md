@@ -41,7 +41,7 @@ Antes de comenzar, asegúrate de tener lo siguiente instalado en tu computadora:
 1. Inicia XAMPP y activa los módulos **Apache** y **MySQL**.
 2. Copia la carpeta del proyecto (descargada previamente) en la ruta:  
    `C:\xampp\htdocs`  
-   La carpeta del proyecto debería llamarse, por ejemplo, `e-libeR`.
+   La carpeta del proyecto debería llamarse, por ejemplo, `e-libeR`.  
 Descarga XAMPP desde: `https://www.apachefriends.org/`.
 
 ---
