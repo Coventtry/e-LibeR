@@ -9,13 +9,13 @@
 #### **Vistas Previas del Sistema**
 
 **1. Menú de Ingreso (sin login)**  
-![Menú de Ingreso](img/menu_ingreso.png)
+![Menú de Ingreso](img/menu_ingreso.jpg)
 
 **2. Menú de Bibliotecario (ya logueado)**  
-![Menú de Bibliotecario](img/menu_bibliotecario.png)
+![Menú de Bibliotecario](img/menu_bibliotecario.jpg)
 
 **3. Base de Datos en MySQL**  
-![Base de Datos MySQL](img/bd_mysql.png)
+![Base de Datos MySQL](img/bd_mysql.jpg)
 
 ---
 
