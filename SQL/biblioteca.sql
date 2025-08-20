@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-06-2025 a las 23:05:21
+-- Tiempo de generación: 20-08-2025 a las 20:47:54
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -44,9 +44,7 @@ INSERT INTO `anotaciones` (`id`, `anotacion`, `fecha`) VALUES
 (20, 'Unificar estilos de todas las páginas, y pie de página.', '2024-11-10 05:20:48'),
 (21, 'Establecer Roles, quien elimina a los bibliotecarios.', '2024-11-10 05:26:20'),
 (22, 'Revisar áreas no encontradas en relación de tablas materiales.', '2024-11-10 06:13:16'),
-(23, 'Sistema de Gestión de Reglas, codificar.', '2024-11-12 02:51:35'),
-(24, 'Revisar ortografía en el menú de bibliotecario.', '2024-11-12 22:18:26'),
-(25, 'Ah poner todo en orden', '2025-05-16 08:54:26');
+(23, 'Sistema de Gestión de Reglas, codificar.', '2024-11-12 02:51:35');
 
 -- --------------------------------------------------------
 
@@ -97,7 +95,7 @@ INSERT INTO `areas` (`id`, `codigo_dewey`, `nombre`, `Abreviado`) VALUES
 (102, '310', 'Mapas / Atlas / Cartografía Escolar', 'MAPA'),
 (103, '320', 'Educación Rural / Contextos Desfavorecidos', 'RURAL'),
 (104, '330', 'Historia Argentina / Historia Universal / Procesos Políticos', 'HISTAR'),
-(105, '999', 'xxx', 'PXXX');
+(107, '4456', 'pepinologia', 'pepi');
 
 -- --------------------------------------------------------
 
@@ -109,22 +107,35 @@ CREATE TABLE `bibliotecarios` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
   `usuario` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `Clave_unica` varchar(50) DEFAULT NULL
+  `Clave_unica` varchar(50) DEFAULT NULL,
+  `picture` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `bibliotecarios`
 --
 
-INSERT INTO `bibliotecarios` (`id`, `nombre`, `email`, `usuario`, `password`, `Clave_unica`) VALUES
-(1, 'Eduardo', 'edu.ar@hotmail.com', 'Edu', '$2y$10$gv1PnAkjUmKliZhkaQ1Fr.s9KskC8wwGnDdC8jxqhLSNXcK25YSWq', NULL),
-(2, 'Facu', 'Facuarias@gmail.com', 'Farias', '$2y$10$V2yHOQc07pk9iBlIhIpAie/5c6j3gVMKXpY1TNNxsHikeIHYnN73K', NULL),
-(3, 'Gerardo Sopopich', 'gerosopi_32@gmail.com', 'Geropi', '$2y$10$RO0LS0k9ZdgscFwiMf1oKOhvxTKDNQ79HdN1teDLR2yOXDup5bOnG', NULL),
-(4, 'Juan', 'juan1este23@gmail.com', 'ENDRIZZI JUAN', '$2y$10$qhnPKH/AEgAZ8zVTS/0K3uDvL3s0Pah.DazV9Zz221236ycyijX4m', 'j1u2a3n4'),
-(5, 'Juan', 'endrijuan8u4@gmail.com', 'E_juan2', '$2y$10$N0SYX39bGp8Ae8sE9D8/1ucpfsFaXqZaHnSXGeWs.mqMbjZWym98G', NULL),
-(6, 'Usuariox', 'keteimporta@gmail.com', 'usuariox', '$2y$10$dyogc0f8QYRYGRktgMb3keN5cfRlB5GKhMWqqccc5WELNt433n4Ki', NULL);
+INSERT INTO `bibliotecarios` (`id`, `nombre`, `email`, `telefono`, `usuario`, `password`, `Clave_unica`, `picture`) VALUES
+(1, 'Juan Endrizzi', 'usuarui_deprueba@gmail.com', NULL, 'admin', '$2y$10$qj/UsqoFcCtD3sdm/5EH5.zjIge78cwP/QeN5O7VRyiBMNfd4zjee', '$2y$10$H6K6lmQrgPkodeVfeEkgz.Ls4chz00aIvuxrcKeJfsR', ''),
+(6, 'Jero', 'jeronimo123@gmail.com', '2452122422', 'Jero', '$2y$10$3AuGS/3QYe380hYXzEDoMuMmM28ngU9pxxnEkPSrpmjZHI2.m.i0S', '$2y$10$qqpA9h5dksmnF0AjNvDCVOwpLJTIFoIJ8SiGBZHRR4g', ''),
+(8, 'Rodrigo A. Garcia S.', 'rodrigogarciafaud@gmail.com', NULL, 'Rodrigo G.', '$2y$10$O11Fg0vJXE1dZskiIi9wE.qXO4CHXwRjZdkW5iezQYA/QgCXiMaNS', '$2y$10$fPIUgzQtPWI9mKBEdxxcF.2cA9bHCyaS8rtijCd4dWc', '167584762.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historial_socios`
+--
+
+CREATE TABLE `historial_socios` (
+  `id` int(11) NOT NULL,
+  `id_socio` int(11) NOT NULL,
+  `accion` enum('ALTA','BAJA') NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `observaciones` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -162,10 +173,10 @@ CREATE TABLE `materiales` (
 --
 
 INSERT INTO `materiales` (`id`, `titulo`, `autor`, `anio_publicacion`, `area_id`, `categoria`, `codigo`, `disponibilidad`, `editorial`, `clasificacion_fisica`) VALUES
-(165, 'Transilvania express Guía de vampiros y de Monstruos', 'De Santis Pablo', 2014, 91, 'LIBRO', '1300-002', 6, 'Colihue', 'INFJU -A-1-2'),
+(165, 'Transilvania express Guía de vampiros y de Monstruos', 'De Santis Pablo', 2014, 91, 'LIBRO', '1300-002', 9, 'Colihue', 'INFJU -A-1-2'),
 (167, 'EL Superzorro', 'Roald Dahl', 2014, 91, 'LIBRO', '1300-004', 5, 'Alfaguara', 'INFJU -A-1-2'),
 (168, 'El héroe y otros cuentos', 'Ricardo Mariño', 2009, 91, 'LIBRO', '1300-005', 5, 'Alfaguara', 'INFJU -A-1-2'),
-(169, 'La Nariz', 'Gogol Nikolai', 2014, 91, 'LIBRO', '1300-006', 3, 'Colihue', 'INFJU -A-1-2'),
+(169, 'La Nariz', 'Gogol Nikolai', 2014, 91, 'LIBRO', '1300-006', 5, 'Colihue', 'INFJU -A-1-2'),
 (170, 'El Reino del Revés (2 ejemplares)', 'Walsh María Elena', 2004, 91, 'LIBRO', '1300-007', 5, 'Alfaguara', 'INFJU -A-1-2'),
 (172, 'Los viejitos de la casa', 'Iris Rivera', 2013, 91, 'LIBRO', '1300-009', 5, 'Edebe', 'INFJU -A-1-2'),
 (173, 'La princesa y el guisante', 'Andersen Hans Chistian', 2012, 91, 'LIBRO', '1300-010', 5, 'Anaya', 'INFJU -A-1-2'),
@@ -634,7 +645,7 @@ INSERT INTO `materiales` (`id`, `titulo`, `autor`, `anio_publicacion`, `area_id`
 (953, 'Seis estudios de psicología', 'Piaget Jean', 1998, 9, 'libros', '800-004', 5, 'Ariel', 'PSICO D- 2-1'),
 (954, 'Vigotski su proyección en el pensamiento actual.', 'Dubrovsky Silvia (compiladora)', 2000, 9, 'libros', '800-005', 5, 'Novedades educativas', 'PSICO D- 2-1'),
 (959, 'Curso de PSICOLOGIA', 'Ruiz DANIEL', 1984, 9, 'libros', '800-010', 5, 'Estrada Editorial', 'PSICO D- 2-1'),
-(964, 'Acerca de los niños', 'Winnicott Donald', 2006, 9, 'libros', '800-015', 5, 'Paidos', 'PSICO D- 2-1'),
+(964, 'Acerca de los niños', 'Winnicott Donald', 2006, 9, 'libros', '800-015', 57, 'Paidos', 'PSICO-D-2-1'),
 (969, 'La biblia del lenguaje corporal. Guía práctica para interpretar los gestos y las expresiones de las personas', 'James Judi', 2010, 9, 'libros', '800-020', 5, 'Paidos', 'PSICO D- 2-1'),
 (975, 'Cerebro Ultimas Noticias', 'Golombex Diego A.', 1998, 9, 'libros', '800-026', 5, 'Colihue ediciones', 'PSICO D- 2-1'),
 (979, 'Mente y Cerebro para principiantes', 'Gellaty Angus, Zárate Oscar', 2000, 9, 'libros', '800-030', 5, 'Era Naciente', 'PSICO D- 2-1'),
@@ -1056,7 +1067,21 @@ INSERT INTO `materiales` (`id`, `titulo`, `autor`, `anio_publicacion`, `area_id`
 (1698, 'Escuelas y profesores ¿Hacia una reconversión de los Centros y la función docente?', 'Escudero Juan Manuel, González Maria Teresa', 1999, 93, 'libros', '60-287', 5, 'Ediciones pedagógicas', 'INVEST G- 3-1'),
 (1699, 'Materiales Curriculares Como elaborarlos, seleccionarlos y usarlos', 'Aran Parcerisa Artur', 1997, 93, 'libros', '60-288', 5, 'GRAO', 'INVEST G- 3-1'),
 (1700, 'Didactica de las matemáticas para primaria', 'Chamorro Maria del Carmen (Coord.)', 2003, 93, 'libros', '60-289', 5, 'PEARSON Educacion', 'INVEST G- 3-1'),
-(1701, 'Didactica de las ciencias del lenguaje aportes y reflexiones', 'Alisedo Graciela, Melgar Sara, Chioci Cristina', 1997, 93, 'libros', '60-290', 5, 'Paidos', 'INVEST G- 3-1');
+(1701, 'Didactica de las ciencias del lenguaje aportes y reflexiones', 'Alisedo Graciela, Melgar Sara, Chioci Cristina', 1997, 93, 'libros', '60-290', 5, 'Paidos', 'INVEST G- 3-1'),
+(1703, 'Cien años de soledad', 'Gabriel García Márquez', 1967, 87, NULL, '250-001', 30, 'Editorial Sudamericana', 'ARTELIT-B-(E)5-5'),
+(1704, 'Cuentos claros', 'Antonio Di Benedetto', 1969, 87, NULL, '250-002', 70, 'Galerna', 'ARTELIT-B-(M)6-3'),
+(1705, 'Cuentos claros', 'Antonio Di Benedetto', 1969, 87, NULL, '250-003', 70, 'Galerna', 'ARTELIT-C-(E)15-3'),
+(1706, 'El matadero', 'Esteban Echeverría', 1871, 87, NULL, '250-004', 10, 'Una crítica a la sociedad argentina de la época. ', 'ARTELIT-B-(E)8-1'),
+(1708, 'Pepinillo y sus desventuras intrigantes', 'Roque Saez Pela', 1245, 107, NULL, '4456-001', 4, 'pepiza', 'pepi-E-(M)13-3'),
+(1710, 'lenguas muertas y mixtas', 'J. K. Rowlin', 1999, 87, NULL, '250-001', 5, 'pepiza', 'ARTELIT-F-(E)8-4'),
+(1711, '2rt', 'qwadd', 1241, 6, NULL, '500-001', 134, 'pepiza', 'EDINIP-D-(E)6-3'),
+(1712, 'Nuevas sas2', '442', 1345, 1, NULL, '010-001', 3, 'Perusia', 'CIENAT-E-(E)11-4'),
+(1713, '34r', '13', 1234, 87, NULL, '250-001', 134, 'Perusia', 'ARTELIT-C-(E)10-3'),
+(1714, 'Nuevas sas', 'sas', 1313, 94, NULL, '70-001', 4, 'pepiza', 'AMBIENT-A-(M)13-2'),
+(1715, 'Pepo', 'J. K. Rowlin', 1234, 87, NULL, '250-001', 4, 'pepiza', 'ARTELIT-B-(E)2-3'),
+(1716, '344', 'J. K. Rowlin', 1234, 87, NULL, '250-001', 134, 'Perusia', 'ARTELIT-E-(E)7-4'),
+(1717, 'Nuevas sas', 'J. K. Rowlin', 1232, 86, NULL, '1000-001', 134, 'Paidos', 'DIDAC-B-(E)11-3'),
+(1718, '1234', '1234', 1234, 97, NULL, '230-001', 34, '123', 'ANTO-B-(E)6-2');
 
 -- --------------------------------------------------------
 
@@ -1078,7 +1103,7 @@ CREATE TABLE `noticias` (
 
 INSERT INTO `noticias` (`id`, `titulo`, `descripcion`, `imagen`, `fecha`) VALUES
 (6, 'Nuevas adquisiciones', '¡Llegaron nuevos títulos a nuestra colección! Visita la sección de novedades y descubre los últimos libros en literatura, ciencia y más.', 'img/9788411482448-leer-libros-disenar-portadas.jpg', '2024-11-08 10:31:37'),
-(7, 'Clases de apoyo escolar', 'Apoya tu estudio con nuestras clases gratuitas de refuerzo en matemáticas y literatura. Inscripciones abiertas en el mostrador de información.', 'img/WhatsApp-Image-2024-02-02-at-10.00.45.jpeg', '2024-11-08 10:43:19'),
+(7, 'Clases de apoyo escolar', 'Apoya tu estudio con nuestras clases gratuitas de refuerzo en matemáticas y literatura. Inscripciones abiertas en el mostrador de información. y etc', 'img/WhatsApp-Image-2024-02-02-at-10.00.45.jpeg', '2024-11-08 10:43:19'),
 (8, 'Club de lectura juvenil', 'Únete al club de lectura juvenil y comparte tu pasión por los libros. Nos reunimos el último viernes de cada mes a las 5:00 p.m.', 'img/JuveWeb.png', '2024-11-08 10:45:51'),
 (9, 'Taller de escritura creativa', 'Desarrolla tu talento y estilo en nuestro taller de escritura. ¡No necesitas experiencia previa! Próxima sesión el 10 de noviembre.', 'img/taller-escritura-creativa_web.jpg', '2024-11-08 11:03:28'),
 (10, 'Ampliación de horario', 'Desde ahora, abrimos los sábados de 8 a 12 Hs para que tengas más tiempo de disfrutar de la biblioteca.', 'img/unnamed.jpg', '2024-11-08 11:19:18'),
@@ -1146,7 +1171,18 @@ INSERT INTO `prestamos` (`id`, `socio_id`, `material_id`, `fecha_prestamo`, `fec
 (24, 71, 169, '2025-06-22', '2025-06-24', 'devuelto', 2),
 (25, 76, 165, '2025-06-22', '2025-06-22', 'devuelto', 1),
 (26, 71, 169, '2025-06-23', '2025-06-25', 'devuelto', 2),
-(27, 77, 169, '2025-06-23', '2025-06-25', 'pendiente', 2);
+(27, 77, 169, '2025-06-23', '2025-06-25', 'devuelto', 2),
+(28, 78, 165, '2025-08-07', '2025-08-08', 'devuelto', 1),
+(29, 89, 165, '2025-08-15', '2025-08-16', 'devuelto', 5),
+(30, 41, 165, '2025-08-19', '2025-08-26', 'devuelto', 4),
+(31, 41, 165, '2025-08-19', '2025-08-26', 'devuelto', 4),
+(32, 41, 165, '2025-08-19', '2025-08-26', 'devuelto', 3),
+(33, 41, 165, '2025-08-20', '2025-08-22', 'devuelto', 2),
+(34, 41, 165, '2025-08-20', '2025-08-28', 'devuelto', 2),
+(35, 41, 165, '2025-08-20', '2025-08-28', 'devuelto', 1),
+(36, 41, 165, '2025-08-20', '2025-08-28', 'activo', 2),
+(37, 38, 165, '2025-08-20', '2025-08-27', 'devuelto', 1),
+(38, 38, 165, '2025-08-20', '2025-08-26', 'devuelto', 3);
 
 -- --------------------------------------------------------
 
@@ -1219,12 +1255,22 @@ INSERT INTO `socios` (`id`, `nombre`, `apellido`, `telefono`, `direccion`, `emai
 (67, 'Luis', 'Martínez', '555888222', 'Calle del Sol 789', 'luis.martinez@email.com', 3, 2, 1),
 (68, 'María', 'Sánchez', '666777555', 'Calle de los Álamos 101', 'maria.sanchez@email.com', 4, 2, 1),
 (69, 'Carlos', 'López', '444555666', 'Callejón de la Luna 202', 'carlos.lopez@email.com', 1, 3, 1),
-(71, 'Esteban', 'Endrizzi', '02645856790', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'este_endri@gmail.com', 6, 4, 1),
+(71, 'Esteban', 'Endrizzi', '02645856790', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'este_endri2@gmail.com', 6, 4, 1),
 (73, 'Paula ', 'coso', '2645878987', '1234', 'lapaula@gmail.com', 1, 6, 1),
-(74, 'ESTEBANQUITO', 'RUSO', '26457898767', 'keteimporta22norte', 'elruso22_@gmail.com', 2, 3, 1),
-(75, 'JOSESITO', 'TURRO', '21342123', 'Caucete, San Juan, Argentina', 'TUTURRITO@GMAIL.COM', 2, 1, 1),
 (76, 'Macarena Alejandra', 'Sevilla', '2646285998', 'keteimporta22norte', 'maca_12@gmail.com', 3, 1, 1),
-(77, 'Brenda Lumila', 'Sevilla', '2644729737', 'fray mamerto squiu 105 villa dolores', 'otaku_22@gmail.com', 6, 2, 1);
+(77, 'Brenda Lumila', 'Sevilla', '2644729737', 'fray mamerto squiu 105 villa dolores', 'otaku_22@gmail.com', 6, 2, 1),
+(78, 'Maria', 'Algañaraz', '2645987890', 'Caucete, San Juan, Argentina', 'mariadeo0312@hotmail.com', 6, 3, 1),
+(79, 'Mercedes', 'Gutierrez', '02645547680', 'fray mamerto squiu 105 villa dolores', 'merce_guti@gmail.com', 3, 6, 1),
+(80, 'Nicolas', 'Jofre', '02645853113', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'nicojofre2@gmail.com', 1, 5, 1),
+(81, 'Nicolas', 'Jofre', '02645853113', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'nicojofre2@gmail.com', 1, 5, 1),
+(82, 'Nicolas', 'Jofre', '02645853113', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'nicojofre2@gmail.com', 1, 5, 1),
+(83, 'Nicolas', 'Jofre', '02645853113', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'nicojofre2@gmail.com', 1, 5, 1),
+(84, 'Nicolas', 'Jofre', '02645853113', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'nicojofre2@gmail.com', 1, 5, 1),
+(85, 'Nicolas', 'Jofre', '02645853113', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'nicojofre2@gmail.com', 1, 5, 1),
+(86, 'Nicolas', 'Jofre', '02645853113', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'nicojofre2@gmail.com', 1, 5, 1),
+(87, 'Nicolas', 'Jofre', '02645853113', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'nicojofre2@gmail.com', 1, 5, 1),
+(88, 'Nicolas', 'Jofre', '02645853113', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'nicojofre2@gmail.com', 1, 5, 1),
+(89, 'Aylen', 'Suarez', '02646856790', 'Villa Eusebio zapata M/c lote 12  Villa el bolsillo', 'suarez212@gmail.com', 6, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -1247,7 +1293,8 @@ CREATE TABLE `ubicaciones_fisicas` (
 --
 
 INSERT INTO `ubicaciones_fisicas` (`id`, `material_id`, `pasillo`, `estante`, `nivel`, `codigo_ubicacion`, `fecha_asignacion`) VALUES
-(2, 195, 'A', 1, 2, 'LITINF-A-1-2', '2025-06-21');
+(2, 195, 'A', 1, 2, 'LITINF-A-1-2', '2025-06-21'),
+(3, 964, 'D', 2, 1, 'PSICO-D-2-1', '2025-08-19');
 
 --
 -- Índices para tablas volcadas
@@ -1273,6 +1320,13 @@ ALTER TABLE `areas`
 ALTER TABLE `bibliotecarios`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indices de la tabla `historial_socios`
+--
+ALTER TABLE `historial_socios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_socio` (`id_socio`);
 
 --
 -- Indices de la tabla `libros`
@@ -1334,13 +1388,25 @@ ALTER TABLE `ubicaciones_fisicas`
 -- AUTO_INCREMENT de la tabla `anotaciones`
 --
 ALTER TABLE `anotaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `areas`
 --
 ALTER TABLE `areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+
+--
+-- AUTO_INCREMENT de la tabla `bibliotecarios`
+--
+ALTER TABLE `bibliotecarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `historial_socios`
+--
+ALTER TABLE `historial_socios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `libros`
@@ -1352,13 +1418,13 @@ ALTER TABLE `libros`
 -- AUTO_INCREMENT de la tabla `materiales`
 --
 ALTER TABLE `materiales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1703;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1719;
 
 --
 -- AUTO_INCREMENT de la tabla `noticias`
 --
 ALTER TABLE `noticias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `notificaciones`
@@ -1370,7 +1436,7 @@ ALTER TABLE `notificaciones`
 -- AUTO_INCREMENT de la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamos_detalle`
@@ -1382,17 +1448,23 @@ ALTER TABLE `prestamos_detalle`
 -- AUTO_INCREMENT de la tabla `socios`
 --
 ALTER TABLE `socios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT de la tabla `ubicaciones_fisicas`
 --
 ALTER TABLE `ubicaciones_fisicas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `historial_socios`
+--
+ALTER TABLE `historial_socios`
+  ADD CONSTRAINT `historial_socios_ibfk_1` FOREIGN KEY (`id_socio`) REFERENCES `socios` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `notificaciones`
