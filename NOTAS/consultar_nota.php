@@ -103,7 +103,7 @@ try {
             echo "<div class='anotacion-container'>";
             echo "<div class='fecha'>" . htmlspecialchars($row["fecha"]) . "</div>";
             echo "<div class='contenido'><strong>" . htmlspecialchars($row["anotacion"]) . "</strong></div>";
-            echo "<form action='/e-LibeR/eliminar_anotacion.php' method='post' style='display:inline;' onsubmit='return confirmDeletion();'>";
+            echo "<form action='/e-LibeR/notas/eliminar_anotacion.php' method='post' style='display:inline;' onsubmit='return confirmDeletion();'>";
             echo "<input type='hidden' name='id' value='" . htmlspecialchars($row["id"]) . "'>";
             echo "<button type='submit' class='delete-btn'>x</button>";
             echo "</form>";

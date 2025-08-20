@@ -142,12 +142,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirmar_prestamo']))
         ]);
 
         $pdo->commit();
-        echo '<div id="confirmModal" class="confirmacion-box">'
-            . '<div class="confirmacion-header"><h4>Préstamo Confirmado</h4>'
-            . '<button onclick="document.getElementById(\'confirmModal\').style.display=\'none\'; window.location=\'prestamo.php\'" style="float:right;font-size:18px;background:none;border:none">✖</button>'
-            . '</div>'
-            . '<p><strong>Clasificación Física:</strong> ' . htmlspecialchars($material['clasificacion_fisica']) . '</p>'
-            . '</div>';
+       echo '<div id="confirmModal" class="confirmacion-box" style="text-align:center;">'
+   . '<div class="confirmacion-header"><h4>Préstamo Confirmado</h4>'
+   . '<button onclick="document.getElementById(\'confirmModal\').style.display=\'none\'; window.location=\'prestamo.php\'" style="float:right;font-size:18px;background:none;border:none">✖</button>'
+   . '</div>'
+   . '<p><strong>Clasificación Física:</strong> ' . htmlspecialchars($material['clasificacion_fisica']) . '</p>'
+   . '</div>';
     } catch (Exception $e) {
         $pdo->rollBack();
         echo '<div class="alert alert-danger text-center">' . htmlspecialchars($e->getMessage()) . '</div>';
@@ -165,12 +165,12 @@ elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['material_id'], $_P
         echo '<div class="alert alert-danger text-center">Todos los campos son obligatorios y deben ser válidos.</div>';
     } else {
         $fecha_actual = date('Y-m-d');
-        $fecha_limite = date('Y-m-d', strtotime('+3 days'));
+        $fecha_limite = date('Y-m-d', strtotime('+14 days'));
 
         if ($fecha_devolucion < $fecha_actual) {
             $mensaje_error_fecha = 'La fecha de devolución no puede ser anterior a hoy.';
         } elseif ($fecha_devolucion > $fecha_limite) {
-            $mensaje_error_fecha = 'La fecha de devolución no puede superar los 3 días desde hoy.';
+            $mensaje_error_fecha = 'La fecha de devolución no puede superar las dos semanas desde hoy.';
         } else {
             try {
                 $stmtSocio = $pdo->prepare("SELECT * FROM socios WHERE id = :id");
@@ -252,9 +252,9 @@ try {
     <form action="prestamo.php" method="POST">
         <div class="form-group">
             <label for="email">Nombre o email:</label>
-            <input type="text" class="form-control" name="email" id="email" required>
+            <input type="text" class="form-control" name="email" id="email" placeholder="Ingresar los tres caracteres principales" required>
         </div>
-        <button type="submit" class="btn btn-primary btn-block" name="buscar">Buscar Socio</button>
+        <button type="submit" class="btn btn-primary btn-block" name="buscar">Buscar Socio</button><br>
     </form>
 
     <?php if (!empty($socios)): ?>

@@ -77,8 +77,6 @@ $conn = null;
 <?php else: ?>
     <p>No se encontraron áreas registradas.</p>
 <?php endif; ?>
-
-    <a href="../ingreso_bibliotecario_1.php" class="btn btn-secondary">Volver al Menú Principal</a>
 </div>
 </body>
 </html>

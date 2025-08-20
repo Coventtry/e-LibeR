@@ -1,3 +1,51 @@
+ <style>
+        body { background-color: #e8f5e9; font-family: Arial; }
+        .container { margin-top: 50px; }
+        h1 { color: #2e7d32; text-align: center; margin-bottom: 30px; }
+        label { color: #1b5e20; }
+        #codigo-container { display: none; }
+        .location-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        #clasificacion-fisica { background-color: #e9e9e9; font-weight: bold; padding: 10px; margin-top: 10px; }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);  
+        }
+        .success-message {
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .error-message {
+            background-color: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+         .contador{
+            margin-top:10px;
+            font-weight:bold;
+            font-size:16px;
+        }
+        footer {
+            background-color: blue;
+            color: white;
+            padding: 32px;
+            text-align: center;
+            margin-top: 428px;
+        }
+    </style>
 <?php
 require '../conexion/CONECTOR.PHP';
 
@@ -42,12 +90,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindParam(':area_id', $area_id);
             $stmt->bindParam(':clasificacion_fisica', $clasificacion_fisica);
 
-            if ($stmt->execute()) {
-                header("Location: ingreso_bibliotecario.php?success=1");
-                exit();
+          if ($stmt->execute()) {
+    // Mostrar mensaje y contador antes de redirigir
+    echo '
+    <!-- Contador de redirección -->
+    <div id="contador">
+        Redirigiendo en 3 segundos...
+    </div>
+</div>
+    <script>
+        let tiempo = 3; // Segundos
+        const contadorDiv = document.getElementById("contador");
+
+        const interval = setInterval(() => {
+            tiempo--;
+            if(tiempo > 0){
+                contadorDiv.textContent = `Redirigiendo en ${tiempo}...`;
             } else {
-                $error = "Error al guardar el material.";
+                clearInterval(interval);
+                window.location.href = "../ingreso_bibliotecario_1.php?success=1";
             }
+        }, 1000);
+    </script>
+    ';
+    exit();
+} else {
+    $error = "Error al guardar el material.";
+}
+
         } catch (PDOException $e) {
             $error = "Error de inserción: " . $e->getMessage();
         }
@@ -60,15 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Agregar Material</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body { background-color: #e8f5e9; font-family: Arial; }
-        .container { margin-top: 50px; }
-        h1 { color: #2e7d32; text-align: center; margin-bottom: 30px; }
-        label { color: #1b5e20; }
-        #codigo-container { display: none; }
-        .location-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-        #clasificacion-fisica { background-color: #e9e9e9; font-weight: bold; padding: 10px; margin-top: 10px; }
-    </style>
+   
 </head>
 <body>
     <div class="container">

@@ -1,5 +1,5 @@
 <?php
-require 'CONECTOR.PHP'; // Debe crear $conn con PDO y SQLite
+require '../conexion/CONECTOR.PHP'; // Debe crear $conn con PDO y SQLite
 
 // Obtener la anotación del formulario (asegurarse de que venga con POST)
 $anotacion = $_POST['anotacion'] ?? '';
@@ -24,7 +24,7 @@ try {
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<?php include 'icono.php'; ?>
+<?php include '../icono.php'; ?>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Resultado de la Carga</title>
@@ -79,18 +79,24 @@ try {
     <?php else: ?>
         <div class="error-message"><?= htmlspecialchars($message) ?></div>
     <?php endif; ?>
+
+    <!-- Contador de redirección -->
+    <div id="contador" style="margin-top:10px; font-weight:bold; font-size:16px;">
+        Redirigiendo en 3 segundos...
+    </div>
 </div>
 
-<footer>
-    <h6>Practica Profesionalizante I</h6>
-    <h6>Esta página fue desarrollada utilizando HTML 5, CSS, Bootstrap 5, PHP</h6>
-</footer>
-
 <script>
-    setTimeout(function() {
-        window.location.href = 'crear_nota.php';
-    }, 3000);
-</script>
+    let tiempo = 3; // Segundos
+    const contadorDiv = document.getElementById('contador');
 
-</body>
-</html>
+    const interval = setInterval(() => {
+        tiempo--;
+        if(tiempo > 0){
+            contadorDiv.textContent = `Redirigiendo en ${tiempo}...`;
+        } else {
+            clearInterval(interval);
+            window.location.href = 'crear_nota.php';
+        }
+    }, 1000);
+</script>

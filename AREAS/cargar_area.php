@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mensaje = "Error: El área '$nombre_area' ya existe en la base de datos.";
             } else {
                 // Insertar nueva área
-                $sql = "INSERT INTO areas (nombre, codigo_dewey, Abreviado) VALUES (:nombre, :codigo :Abreviado)";
+                $sql = "INSERT INTO areas (codigo_dewey, nombre,  Abreviado) VALUES (:codigo, :nombre, :Abreviado)";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute([
                     ':nombre' => $nombre_area,

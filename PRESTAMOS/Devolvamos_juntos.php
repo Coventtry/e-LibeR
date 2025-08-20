@@ -374,6 +374,5 @@ $linkWhatsapp = "https://wa.me/{$telefono}?text={$mensajeWhatsapp}";
         });
     </script> 
 </body>
- <div class="footer-spacer"></div>
-   
+ </div>
 </html>

@@ -1,47 +1,60 @@
-<?php
-require '../conexion/CONECTOR.PHP';
+<?php 
+require '../conexion/CONECTOR.PHP';  
+require_once '../phpqrcode/qrlib.php'; // Incluimos la librería PHPQRCode
 
-$material_seleccionado = null;
-$codigo_barra = '';
-$mensaje_error = '';
+$material_seleccionado = null; 
+$codigo_barra = ''; 
+$mensaje_error = '';  
+$archivo_qr = ''; // Variable para la ruta del QR generado
 
-// Manejar búsqueda del material
-if (isset($_POST['buscar'])) {
-    $busqueda = trim($_POST['busqueda']);
+// Manejar búsqueda del material 
+if (isset($_POST['buscar'])) {     
+    $busqueda = trim($_POST['busqueda']);      
 
-    if (!empty($busqueda)) {
-        $sql = "SELECT * FROM materiales WHERE titulo LIKE :busqueda";
-        $stmt = $conn->prepare($sql);
-        $param = '%' . $busqueda . '%';
-        $stmt->bindParam(':busqueda', $param, PDO::PARAM_STR);
+    if (!empty($busqueda)) {         
+        $sql = "SELECT * FROM materiales WHERE titulo LIKE :busqueda";         
+        $stmt = $conn->prepare($sql);         
+        $param = '%' . $busqueda . '%';         
+        $stmt->bindParam(':busqueda', $param, PDO::PARAM_STR);          
 
-        try {
-            $stmt->execute();
-            $material_seleccionado = $stmt->fetch(PDO::FETCH_ASSOC);
+        try {             
+            $stmt->execute();             
+            $material_seleccionado = $stmt->fetch(PDO::FETCH_ASSOC);              
 
-            if ($material_seleccionado) {
+            if ($material_seleccionado) {                 
                 $codigo_barra = $material_seleccionado['id'];
-            } else {
-                $mensaje_error = "<p style='color:red;'>No se encontró material con ese título.</p>";
-            }
-        } catch (PDOException $e) {
-            $mensaje_error = "<p style='color:red;'>Error en la búsqueda: " . $e->getMessage() . "</p>";
-        }
-    } else {
-        $mensaje_error = "<p style='color:red;'>Ingrese un título para buscar.</p>";
-    }
-}
-?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <link rel="icon" href="img/icono.ico" type="image/x-icon">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Libros - Biblioteca</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <style>
+                // Generar QR en servidor
+                $directorio_qr = 'qrcodes/'; // Carpeta donde se guardarán los QR
+                if (!is_dir($directorio_qr)) {
+                    mkdir($directorio_qr, 0777, true); // Crear carpeta si no existe
+                }
+
+                $archivo_qr = $directorio_qr . 'QR_' . $codigo_barra . '.png';
+                $contenido_qr = "Título: {$material_seleccionado['titulo']}\nAutor: {$material_seleccionado['autor']}\nAño: {$material_seleccionado['anio_publicacion']}\nCategoría: {$material_seleccionado['categoria']}";
+
+                QRcode::png($contenido_qr, $archivo_qr, QR_ECLEVEL_H, 4, 1);
+
+            } else {                 
+                $mensaje_error = "<p style='color:red;'>No se encontró material con ese título.</p>";             
+            }         
+        } catch (PDOException $e) {             
+            $mensaje_error = "<p style='color:red;'>Error en la búsqueda: " . $e->getMessage() . "</p>";         
+        }     
+    } else {         
+        $mensaje_error = "<p style='color:red;'>Ingrese un título para buscar.</p>";     
+    } 
+} 
+?>  
+
+<!DOCTYPE html> 
+<html lang="es"> 
+<head>     
+    <link rel="icon" href="img/icono.ico" type="image/x-icon">     
+    <meta charset="UTF-8">     
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">     
+    <title>Registro de Libros - Biblioteca</title>     
+     <style>
         html, body {
             height: 100%;
             margin: 0;
@@ -159,75 +172,55 @@ if (isset($_POST['buscar'])) {
             z-index: 100;
         }
     </style>
-</head>
-<body>
-<div class="container">
-    <h1 id="inicio">Materiales</h1>
+</head> 
+<body> 
+<div class="container">     
+    <h1 id="inicio">Materiales</h1>      
 
-    <!-- Formulario de búsqueda de material -->
-    <form method="post">
-        <input type="text" name="busqueda" placeholder="Buscar por Título" required>
-        <button type="submit" class="btn-primary" name="buscar">Buscar Material</button>
-    </form>
+    <!-- Formulario de búsqueda de material -->     
+    <form method="post">         
+        <input type="text" name="busqueda" placeholder="Buscar por Título" required>         
+        <button type="submit" class="btn-primary" name="buscar">Buscar Material</button>     
+    </form>      
 
-    <?php echo $mensaje_error; ?>
+    <?php echo $mensaje_error; ?>      
 
-    <?php if ($material_seleccionado): ?>
-        <form method="post" style="margin-top: 20px;">
-            <input type="hidden" name="id" value="<?php echo $material_seleccionado['id']; ?>">
-            <div>
-                <label for="titulo">Título</label>
-                <input type="text" name="titulo" value="<?php echo $material_seleccionado['titulo']; ?>" required>
-            </div>
-            <div>
-                <label for="autor">Autor</label>
-                <input type="text" name="autor" value="<?php echo $material_seleccionado['autor']; ?>" required>
-            </div>
-            <div>
-                <label for="anio_publicacion">Año de Publicación</label>
-                <input type="number" name="anio_publicacion" value="<?php echo $material_seleccionado['anio_publicacion']; ?>" required>
-            </div>
-            <div>
-                <label for="categoria">Categoría</label>
-                <input type="text" name="categoria" value="<?php echo $material_seleccionado['categoria']; ?>" required>
-            </div>
-        </form>
+    <?php if ($material_seleccionado): ?>         
+        <form method="post" style="margin-top: 20px;">             
+            <input type="hidden" name="id" value="<?php echo $material_seleccionado['id']; ?>">             
+            <div>                 
+                <label for="titulo">Título</label>                 
+                <input type="text" name="titulo" value="<?php echo $material_seleccionado['titulo']; ?>" required>             
+            </div>             
+            <div>                 
+                <label for="autor">Autor</label>                 
+                <input type="text" name="autor" value="<?php echo $material_seleccionado['autor']; ?>" required>             
+            </div>             
+            <div>                 
+                <label for="anio_publicacion">Año de Publicación</label>                 
+                <input type="number" name="anio_publicacion" value="<?php echo $material_seleccionado['anio_publicacion']; ?>" required>             
+            </div>             
+            <div>                 
+                <label for="categoria">Categoría</label>                 
+                <input type="text" name="categoria" value="<?php echo $material_seleccionado['categoria']; ?>" required>             
+            </div>         
+        </form>          
 
-        <?php if (!empty($codigo_barra)): ?>
-            <div id="barcode-container">
-                <h2>Código QR generado:</h2>
-                <div id="qrcode"></div>
-                <button id="downloadQRBtn" class="btn-primary">Descargar Código QR (PNG)</button>
-            </div>
-        <?php endif; ?>
-    <?php endif; ?>
-</div>
+        <?php if (!empty($codigo_barra)): ?>             
+            <div id="barcode-container">                 
+                <h2>Código QR generado:</h2>                 
+                <img src="<?php echo $archivo_qr; ?>" alt="Código QR">                 
+                <br><br>
+                <a href="<?php echo $archivo_qr; ?>" download="<?php echo addslashes($material_seleccionado['titulo']); ?>.png">
+                    Descargar Código QR (PNG)
+                </a>
+            </div>         
+        <?php endif; ?>     
+    <?php endif; ?> 
+</div>  
 
-<a href="../ingreso_bibliotecario_1.php">← Volver al menú principal</a>
-<br><br>
-<script>
-    var codigo_barra = '<?php echo $codigo_barra; ?>';
-    if (codigo_barra) {
-        var qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: codigo_barra,
-            width: 200,
-            height: 200,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-    }
+<a href="../ingreso_bibliotecario_1.php">← Volver al menú principal</a> 
+<br><br> 
 
-    document.getElementById('downloadQRBtn').addEventListener('click', function() {
-        var img = document.querySelector('#qrcode img') || document.querySelector('#qrcode canvas');
-        var url = img.src || img.toDataURL("image/png");
-        var downloadLink = document.createElement('a');
-        downloadLink.href = url;
-        downloadLink.download = codigo_barra + ".png";
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    });
-</script>
-</body>
+</body> 
 </html>
