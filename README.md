@@ -42,6 +42,7 @@ Antes de comenzar, asegúrate de tener lo siguiente instalado en tu computadora:
 2. Copia la carpeta del proyecto (descargada previamente) en la ruta:  
    `C:\xampp\htdocs`  
    La carpeta del proyecto debería llamarse, por ejemplo, `e-libeR`.
+descarga XAMPP desde: `https://www.apachefriends.org/`
 
 ---
 
